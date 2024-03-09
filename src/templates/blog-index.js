@@ -1,6 +1,8 @@
 import * as React from "react"
+import { graphql } from "gatsby"
 import { GatsbyImage } from "gatsby-plugin-image"
 import Layout from "../components/layout"
+import SEOHead from "../components/head"
 import {
   Container,
   FlexList,
@@ -12,9 +14,17 @@ import {
   Kicker,
   Text,
 } from "../components/ui"
-import SEOHead from "../components/head"
 
-function PostCard({ slug, image, title, excerpt, author, category, ...props }) {
+function PostCard({
+  slug,
+  image,
+  title,
+  excerpt,
+  author,
+  category,
+  date,
+  ...props
+}) {
   return (
     <BlockLink {...props} to={`/blog/${slug}`}>
       {image && (
@@ -27,6 +37,7 @@ function PostCard({ slug, image, title, excerpt, author, category, ...props }) {
         <Kicker>{category}</Kicker>
         {title}
       </Subhead>
+      <Text as="p" className="blogPostDate">{date}</Text>
       <Text as="p">{excerpt}</Text>
       {author?.name && (
         <Text variant="bold">
@@ -37,7 +48,13 @@ function PostCard({ slug, image, title, excerpt, author, category, ...props }) {
   )
 }
 
-function PostCardSmall({ slug, image, title, category, ...props }) {
+function PostCardSmall({
+  slug,
+  image,
+  title,
+  category,
+  ...props
+}) {
   return (
     <BlockLink {...props} to={`/blog/${slug}`}>
       {image && (
@@ -54,29 +71,16 @@ function PostCardSmall({ slug, image, title, category, ...props }) {
   )
 }
 
-export default function BlogIndex({ posts }) {
-  const featuredPosts = posts.filter((p) => p.category === "Featured")
-  const regularPosts = posts.filter((p) => p.category !== "Featured")
-
+export default function BlogIndex(props) {
+  const posts = props.data.allBlogPost.nodes
   return (
     <Layout>
       <Container>
         <Box paddingY={4}>
-          <Heading as="h1">Blog</Heading>
           <FlexList variant="start" gap={0} gutter={3} responsive>
-            {featuredPosts.map((post) => (
+            {posts.map((post) => (
               <Box as="li" key={post.id} padding={3} width="half">
                 <PostCard {...post} />
-              </Box>
-            ))}
-          </FlexList>
-        </Box>
-        <Box paddingY={4}>
-          <Subhead>Product Updates</Subhead>
-          <FlexList responsive wrap gap={0} gutter={3} variant="start">
-            {regularPosts.map((post) => (
-              <Box as="li" key={post.id} padding={3} width="third">
-                <PostCardSmall {...post} />
               </Box>
             ))}
           </FlexList>
@@ -85,6 +89,54 @@ export default function BlogIndex({ posts }) {
     </Layout>
   )
 }
-export const Head = () => {
-  return <SEOHead title="Blog" />
-}
+/*
+export default function BlogIndex(props) {
+  const posts = props.data.allBlogPost.nodes
+
+  return (
+    <Layout title="Blog">
+      <Container>
+        <Box paddingY={4}>
+          <Heading as="h1">Blog</Heading>
+          <ul>
+            {posts.map((post) => (
+              <li key={post.id}>
+                {post.image && (
+                  <Link to={`/blog/${post.slug}`}>
+                    <GatsbyImage
+                      alt={post.image.alt}
+                      image={getImage(post.image)}
+                    />
+                  </Link>
+                )}
+                <Link to={`/blog/${post.slug}`}>{post.title}</Link>
+                <p>{post.excerpt}</p>
+              </li>
+            ))}
+          </ul>
+        </Box>
+      </Container>
+    </Layout>
+  )
+}*/
+
+
+export const query = graphql`
+  query {
+    allBlogPost {
+      nodes {
+        id
+        slug
+        title
+        excerpt
+        category
+        date(formatString:"MMMM Do, YYYY, h:mm a")
+        image {
+          id
+          alt
+          gatsbyImageData
+        }
+      }
+    }
+  }
+`

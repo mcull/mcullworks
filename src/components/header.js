@@ -1,8 +1,6 @@
 import * as React from "react"
-import { useState } from "react"
 import { graphql, useStaticQuery } from "gatsby"
 import { Menu, X } from "react-feather"
-import { useLocation } from '@reach/router';
 
 import {
   Container,
@@ -13,8 +11,7 @@ import {
   Button,
   InteractiveIcon,
   Nudge,
-  VisuallyHidden,
-  Logo,
+  VisuallyHidden
 } from "./ui"
 import {
   mobileNavOverlay,

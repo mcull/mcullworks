@@ -1,5 +1,13 @@
+const fs = require("fs")
+const path = require("path")
 const { documentToHtmlString } = require("@contentful/rich-text-html-renderer")
 const { getGatsbyImageResolver } = require("gatsby-plugin-image/graphql-utils")
+
+const defaults = {
+  postPath: "src/templates/blog-post",
+  indexPath: "src/templates/blog-index",
+  customQueries: false,
+}
 
 exports.createSchemaCustomization = async ({ actions }) => {
   actions.createFieldExtension({
@@ -64,12 +72,44 @@ exports.createSchemaCustomization = async ({ actions }) => {
   actions.createFieldExtension({
     name: "richText",
     extend(options) {
+      return {  
+        resolve(source, args, context, info) {
+          console.log("!!");
+          console.log(source);
+          const body = source.body
+          const doc = JSON.parse(body.raw)
+          const html = documentToHtmlString(doc)
+          return html
+        },
+      }
+    },
+  })
+
+  actions.createFieldExtension({
+    name: "contentfulRichText",
+    extend(options) {
       return {
         resolve(source, args, context, info) {
           const body = source.body
           const doc = JSON.parse(body.raw)
           const html = documentToHtmlString(doc)
           return html
+        },
+      }
+    },
+  })
+
+  actions.createFieldExtension({
+    name: "contentfulExcerpt",
+    extend(options) {
+      return {
+        async resolve(source, args, context, info) {
+          const type = info.schema.getType(source.internal.type)
+          const resolver = type.getFields().contentfulExcerpt?.resolve
+          const result = await resolver(source, args, context, {
+            fieldName: "contentfulExcerpt",
+          })
+          return result.excerpt
         },
       }
     },
@@ -341,6 +381,24 @@ exports.createSchemaCustomization = async ({ actions }) => {
       image: HomepageImage
       html: String!
     }
+
+    interface BlogAuthor implements Node {
+      id: ID!
+      name: String
+      avatar: HomepageImage
+    }
+
+    interface BlogPost implements Node {
+      id: ID!
+      slug: String!
+      title: String!
+      html: String!
+      excerpt: String!
+      image: HomepageImage
+      date: Date! @dateformat
+      author: BlogAuthor
+      category: String
+    }
   `)
 
   // CMS-specific types for Homepage
@@ -513,63 +571,35 @@ exports.createSchemaCustomization = async ({ actions }) => {
     }
   `)
 
-  // CMS specific types for About page
+  // CMS specific types for Blog
   actions.createTypes(/* GraphQL */ `
-    type ContentfulAboutHero implements Node & AboutHero & HomepageBlock
-      @dontInfer {
-      id: ID!
-      blocktype: String @blocktype
-      heading: String
-      text: String
-      image: HomepageImage @link(from: "image___NODE")
-    }
+  type ContentfulBlogAuthor implements Node & BlogAuthor {
+    id: ID!
+    name: String
+    avatar: HomepageImage @link(from: "avatar___NODE")
+  }
 
-    type ContentfulAboutStat implements Node & AboutStat @dontInfer {
-      id: ID!
-      value: String
-      label: String
-    }
+  type contentfulBlogPostExcerptTextNode implements Node {
+    id: ID!
+    excerpt: String!
+    # determine if markdown is required for this field type
+  }
 
-    type ContentfulAboutStatList implements Node & AboutStatList & HomepageBlock
-      @dontInfer {
-      id: ID!
-      blocktype: String @blocktype
-      content: [AboutStat] @link(from: "content___NODE")
-    }
+  type ContentfulBlogPost implements Node & BlogPost {
+    id: ID!
+    slug: String!
+    title: String!
+    html: String! @contentfulRichText
+    body: String!
+    date: Date! @dateformat
+    excerpt: String! @contentfulExcerpt
+    contentfulExcerpt: contentfulBlogPostExcerptTextNode
+      @link(from: "excerpt___NODE")
+    image: HomepageImage @link(from: "image___NODE")
+    author: BlogAuthor @link(from: "author___NODE")
+    category: String
+  }
 
-    type ContentfulAboutProfile implements Node & AboutProfile @dontInfer {
-      id: ID!
-      image: HomepageImage @link(from: "image___NODE")
-      name: String
-      jobTitle: String
-    }
-
-    type ContentfulAboutLeadership implements Node & AboutLeadership & HomepageBlock
-      @dontInfer {
-      id: ID!
-      blocktype: String @blocktype
-      kicker: String
-      heading: String
-      subhead: String
-      content: [AboutProfile] @link(from: "content___NODE")
-    }
-
-    type ContentfulAboutLogoList implements Node & AboutLogoList & HomepageBlock
-      @dontInfer {
-      id: ID!
-      blocktype: String @blocktype
-      heading: String
-      links: [HomepageLink] @link(from: "links___NODE")
-      logos: [HomepageLogo] @link(from: "logos___NODE")
-    }
-
-    type ContentfulAboutPage implements Node & AboutPage @dontInfer {
-      id: ID!
-      title: String
-      description: String
-      image: HomepageImage @link(from: "image___NODE")
-      content: [HomepageBlock] @link(from: "content___NODE")
-    }
   `)
 
   // Layout types
@@ -614,7 +644,82 @@ exports.createSchemaCustomization = async ({ actions }) => {
   `)
 }
 
-exports.createPages = ({ actions }) => {
+const pluginState = {}
+
+exports.onPluginInit = ({ reporter }, _opts = {}) => {
+  const components = {}
+  const opts = {
+    postPath: _opts.postPath || defaults.postPath,
+    indexPath: _opts.indexPath || defaults.indexPath,
+  }
+
+  try {
+    components.post = path.join(global.__GATSBY.root, opts.postPath)
+    components.index = path.join(global.__GATSBY.root, opts.indexPath)
+
+    if (fs.existsSync(components.post + ".js")) {
+      components.post = components.post + ".js"
+    } else if (fs.existsSync(components.post + ".tsx")) {
+      components.post = components.post + ".tsx"
+    } else {
+      delete components.post
+      reporter.warn(
+        `[gatsby-theme-abstract-blog] No template found for ${opts.postPath}`
+      )
+      return
+    }
+
+    if (fs.existsSync(components.index + ".js")) {
+      components.index = components.index + ".js"
+    } else if (fs.existsSync(components.index + ".tsx")) {
+      components.index = components.index + ".tsx"
+    } else {
+      delete components.index
+      reporter.warn(
+        `[gatsby-theme-abstract-blog] No template found for ${opts.indexPath}`
+      )
+    }
+  } catch (e) {
+    reporter.warn(`[gatsby-theme-abstract-blog] ${e}`)
+    return
+  }
+
+  pluginState.components = components
+}
+
+exports.pluginOptionsSchema = ({ Joi }) => {
+  return Joi.object({
+    postPath: Joi.string().description("File path to blog post template"),
+    indexPath: Joi.string().description(
+      "File path to blog index page template"
+    ),
+    customQueries: Joi.boolean().description(
+      "Use blog templates as page components with custom GraphQL queries"
+    ),
+  })
+}
+
+exports.onCreateWebpackConfig = ({ actions, reporter }, _opts = {}) => {
+  const components = pluginState.components
+
+  if (!components || !components.post || !components.index) {
+    // fallback components to prevent breaking builds
+    reporter.warn("[gatsby-theme-abstract-blog] Using fallback components")
+    components.post = path.join(__dirname, "src/fallback.js")
+    components.index = path.join(__dirname, "src/fallback.js")
+  }
+
+  actions.setWebpackConfig({
+    resolve: {
+      alias: {
+        "@gatsby-theme-abstract-blog/post": path.resolve(components.post),
+        "@gatsby-theme-abstract-blog/index": path.resolve(components.index),
+      },
+    },
+  })
+}
+
+exports.createPages = async ({ actions, graphql, reporter }, _opts = {}) => {
   const { createSlice } = actions
   createSlice({
     id: "header",
@@ -624,5 +729,67 @@ exports.createPages = ({ actions }) => {
     id: "footer",
     component: require.resolve("./src/components/footer.js"),
   })
+
+  const components = pluginState.components
+  if (!components || !components.post || !components.index) return
+  const opts = { ...defaults, ..._opts }
+
+  reporter.info("[gatsby-theme-abstract-blog] creating pages")
+
+  const templates = opts.customQueries
+    ? components
+    : {
+        post: path.join(__dirname, "src/templates/blog-post.js"),
+        index: path.join(__dirname, "src/templates/blog-index.js"),
+      }
+
+  const result = await graphql(`
+    {
+      posts: allBlogPost {
+        nodes {
+          id
+          slug
+        }
+      }
+    }
+  `)
+
+  if (result.errors) {
+    reporter.panicOnBuild(
+      `[gatsby-theme-abstract-blog] There was an error sourcing blog posts`,
+      result.errors
+    )
+  }
+
+  const posts = result.data.posts.nodes
+
+
+
+  if (posts.length < 1) return
+
+  actions.createPage({
+    path: "/blog/",
+    component: templates.index,
+    context: {
+      posts: posts
+    },
+  })
+
+  posts.forEach((post, i) => {
+    const previous = posts[i - 1]?.slug
+    const next = posts[i + 1]?.slug
+
+    actions.createPage({
+      path: `/blog/${post.slug}`,
+      component: templates.post,
+      context: {
+        id: post.id,
+        slug: post.slug,
+        previous,
+        next,
+      },
+    })
+  })
+  
 }
       

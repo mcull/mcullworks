@@ -20,8 +20,6 @@ import {
   IconLink,
   VisuallyHidden,
 } from "./ui"
-import { useLocation } from "@reach/router"
-import McullLogo from "./mcull-logo"
 
 const socialMedia = {
   TWITTER: {

@@ -1,5 +1,6 @@
 import { style, globalStyle } from "@vanilla-extract/css"
 import { theme } from "../../src/theme.css"
+import { colors } from "../../src/colors.css"
 
 export const blogPost = style({
   fontSize: theme.fontSizes[3],
@@ -64,4 +65,9 @@ globalStyle(`${blogPost} h4`, {
 globalStyle(`${blogPost} h5, ${blogPost} h6`, {
   fontSize: theme.fontSizes[2],
   fontWeight: theme.fontWeights.bold,
+})
+
+globalStyle(`.blogPostDate`, {
+  fontSize: theme.fontSizes[1],
+  color: colors.secondaryText,
 })
