@@ -30,6 +30,7 @@ export const mobileHeaderNavWrapper = styleVariants({
     mobileHeaderNavWrapperBase,
     {
       background: theme.colors.primary,
+      zIndex: 1,
     },
   ],
   closed: [mobileHeaderNavWrapperBase],

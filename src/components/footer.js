@@ -6,8 +6,9 @@ import {
   Instagram,
   Facebook,
   Youtube,
-  GitHub,
+  GitHub
 } from "react-feather"
+import { Linkedin } from 'feather-icons-react'
 import {
   Container,
   Flex,
@@ -19,7 +20,8 @@ import {
   IconLink,
   VisuallyHidden,
 } from "./ui"
-import BrandLogo from "./brand-logo"
+import { useLocation } from "@reach/router"
+import McullLogo from "./mcull-logo"
 
 const socialMedia = {
   TWITTER: {
@@ -52,6 +54,11 @@ const socialMedia = {
     name: "Twitch",
     icon: <Twitch />,
   },
+  LINKEDIN: {
+    url: "https://linkedin.com/in",
+    name: "LinkedIn",
+    icon: <Linkedin />
+  }
 }
 
 const getSocialURL = ({ service, username }) => {
@@ -103,7 +110,7 @@ export default function Footer() {
         <Flex variant="start" responsive>
           <NavLink to="/">
             <VisuallyHidden>Home</VisuallyHidden>
-            <BrandLogo />
+            
           </NavLink>
           <Space />
           <FlexList>

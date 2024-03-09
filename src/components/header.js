@@ -1,6 +1,7 @@
 import * as React from "react"
 import { graphql, useStaticQuery } from "gatsby"
 import { Menu, X } from "react-feather"
+import { useLocation } from "@reach/router"
 import {
   Container,
   Flex,
@@ -11,6 +12,7 @@ import {
   InteractiveIcon,
   Nudge,
   VisuallyHidden,
+  Logo,
 } from "./ui"
 import {
   mobileNavOverlay,
@@ -20,7 +22,7 @@ import {
   mobileNavSVGColorWrapper,
 } from "./header.css"
 import NavItemGroup from "./nav-item-group"
-import BrandLogo from "./brand-logo"
+import HomeIcon from "./home-icon"
 
 export default function Header() {
   const data = useStaticQuery(graphql`
@@ -70,6 +72,8 @@ export default function Header() {
     }
   }, [isOpen])
 
+  const location = useLocation()
+
   return (
     <header>
       <Container className={desktopHeaderNavWrapper}>
@@ -77,7 +81,7 @@ export default function Header() {
         <Flex variant="spaceBetween">
           <NavLink to="/">
             <VisuallyHidden>Home</VisuallyHidden>
-            <BrandLogo />
+            {location.pathname !== '/' && <HomeIcon />}
           </NavLink>
           <nav>
             <FlexList gap={4}>
@@ -96,7 +100,7 @@ export default function Header() {
                 ))}
             </FlexList>
           </nav>
-          <div>{cta && <Button to={cta.href}>{cta.text}</Button>}</div>
+          <div />
         </Flex>
       </Container>
       <Container className={mobileHeaderNavWrapper[isOpen ? "open" : "closed"]}>
@@ -109,7 +113,7 @@ export default function Header() {
           >
             <NavLink to="/">
               <VisuallyHidden>Home</VisuallyHidden>
-              <BrandLogo />
+           
             </NavLink>
           </span>
           <Flex>
@@ -139,6 +143,11 @@ export default function Header() {
         <div className={mobileNavOverlay}>
           <nav>
             <FlexList responsive variant="stretch">
+              <li key={"home"}>
+                <NavLink to="/" className={mobileNavLink}>
+                  Home
+                </NavLink>
+              </li>
               {navItems?.map((navItem) => (
                 <li key={navItem.id}>
                   {navItem.navItemType === "Group" ? (
