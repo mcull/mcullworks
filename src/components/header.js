@@ -1,7 +1,9 @@
 import * as React from "react"
+import { useState } from "react"
 import { graphql, useStaticQuery } from "gatsby"
 import { Menu, X } from "react-feather"
-import { useLocation } from "@reach/router"
+import { useLocation } from '@reach/router';
+
 import {
   Container,
   Flex,
@@ -24,7 +26,8 @@ import {
 import NavItemGroup from "./nav-item-group"
 import HomeIcon from "./home-icon"
 
-export default function Header() {
+export default function Header(props, xx) {
+
   const data = useStaticQuery(graphql`
     query {
       layout {
@@ -63,6 +66,7 @@ export default function Header() {
 
   const { navItems, cta } = data.layout.header
   const [isOpen, setOpen] = React.useState(false)
+ 
 
   React.useEffect(() => {
     if (isOpen) {
@@ -72,8 +76,6 @@ export default function Header() {
     }
   }, [isOpen])
 
-  const location = useLocation()
-
   return (
     <header>
       <Container className={desktopHeaderNavWrapper}>
@@ -81,7 +83,7 @@ export default function Header() {
         <Flex variant="spaceBetween">
           <NavLink to="/">
             <VisuallyHidden>Home</VisuallyHidden>
-            {location.pathname !== '/' && <HomeIcon />}
+            {!props.isHome &&  <HomeIcon />}
           </NavLink>
           <nav>
             <FlexList gap={4}>

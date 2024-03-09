@@ -8,7 +8,7 @@ import SEOHead from "../components/head"
 export default function About(props) {
   const { homepage } = props.data
   return (
-    <Layout>
+    <Layout location={props.location}>
        <div>
             {homepage.blocks.map((block) => {
             const { id, blocktype, ...componentProps } = block

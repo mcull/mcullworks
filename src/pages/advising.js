@@ -7,7 +7,7 @@ import Fallback from "../components/fallback"
 export default function Advising (props) { 
     const { homepage } = props.data 
     return (
-        <Layout>
+        <Layout location={props.location}>
         <div >
             {homepage.blocks.map((block) => {
             const { id, blocktype, ...componentProps } = block

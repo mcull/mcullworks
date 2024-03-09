@@ -8,7 +8,7 @@ import { InlineWidget } from "react-calendly";
 export default function Coaching (props) { 
     const { homepage } = props.data 
     return (
-        <Layout>
+        <Layout location={props.location}>
         <div >
             {homepage.blocks.map((block) => {
             const { id, blocktype, ...componentProps } = block
