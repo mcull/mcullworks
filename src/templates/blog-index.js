@@ -1,5 +1,6 @@
 import * as React from "react"
 import { graphql } from "gatsby"
+import { DateTime } from "luxon"
 import { GatsbyImage } from "gatsby-plugin-image"
 import Layout from "../components/layout"
 import * as styles from "./blog-post.css"
@@ -15,6 +16,8 @@ import {
   Kicker,
   Text,
 } from "../components/ui"
+
+const DATEFORMAT = "MMMM dd, yyyy, h:mm a"
 
 function PostCard({
   slug,
@@ -38,7 +41,7 @@ function PostCard({
         <Kicker>{category}</Kicker>
         {title}
       </Subhead>
-      <Text as="p" className="blogPostDate">{date}</Text>
+      <Text as="p" className="blogPostDate">{DateTime.fromFormat(date, DATEFORMAT).toLocaleString(DateTime.DATE_FULL)}</Text>
       <Text as="p">{excerpt.excerpt}</Text>
       {author?.name && (
         <Text variant="bold">
@@ -74,6 +77,13 @@ function PostCardSmall({
 
 export default function BlogIndex(props) {
   const posts = props.data.allContentfulBlogPost.nodes
+  console.log(posts[0].date)
+  
+  posts.sort((a, b) => { 
+    const aDate = DateTime.fromFormat(a.date, DATEFORMAT)
+    const bDate = DateTime.fromFormat(b.date, DATEFORMAT)
+    console.log(aDate)
+    return bDate.toUnixInteger() - aDate.toUnixInteger() })
   return (
     <Layout>
       <Container>
@@ -102,7 +112,7 @@ export const query = graphql`
           excerpt
         }
         category
-        date(formatString:"MMMM Do, YYYY, h:mm a")
+        date(formatString:"MMMM DD, YYYY, h:mm a")
         image {
           id
           alt
