@@ -74,8 +74,6 @@ exports.createSchemaCustomization = async ({ actions }) => {
     extend(options) {
       return {  
         resolve(source, args, context, info) {
-          console.log("!!");
-          console.log(source);
           const body = source.body
           const doc = JSON.parse(body.raw)
           const html = documentToHtmlString(doc)
@@ -321,58 +319,6 @@ exports.createSchemaCustomization = async ({ actions }) => {
       footer: LayoutFooter
     }
 
-    interface AboutPage implements Node {
-      id: ID!
-      title: String
-      description: String
-      image: HomepageImage
-      content: [HomepageBlock]
-    }
-
-    interface AboutHero implements Node & HomepageBlock {
-      id: ID!
-      blocktype: String
-      heading: String
-      text: String
-      image: HomepageImage
-    }
-
-    interface AboutStat implements Node {
-      id: ID!
-      value: String
-      label: String
-    }
-
-    interface AboutStatList implements Node & HomepageBlock {
-      id: ID!
-      blocktype: String
-      content: [AboutStat]
-    }
-
-    interface AboutProfile implements Node {
-      id: ID!
-      image: HomepageImage
-      name: String
-      jobTitle: String
-    }
-
-    interface AboutLeadership implements Node & HomepageBlock {
-      id: ID!
-      blocktype: String
-      kicker: String
-      heading: String
-      subhead: String
-      content: [AboutProfile]
-    }
-
-    interface AboutLogoList implements Node & HomepageBlock {
-      id: ID!
-      blocktype: String
-      heading: String
-      links: [HomepageLink]
-      logos: [HomepageLogo]
-    }
-
     interface Page implements Node {
       id: ID!
       slug: String!
@@ -380,24 +326,6 @@ exports.createSchemaCustomization = async ({ actions }) => {
       description: String
       image: HomepageImage
       html: String!
-    }
-
-    interface BlogAuthor implements Node {
-      id: ID!
-      name: String
-      avatar: HomepageImage
-    }
-
-    interface BlogPost implements Node {
-      id: ID!
-      slug: String!
-      title: String!
-      html: String!
-      excerpt: String!
-      image: HomepageImage
-      date: Date! @dateformat
-      author: BlogAuthor
-      category: String
     }
   `)
 
@@ -571,36 +499,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
     }
   `)
 
-  // CMS specific types for Blog
-  actions.createTypes(/* GraphQL */ `
-  type ContentfulBlogAuthor implements Node & BlogAuthor {
-    id: ID!
-    name: String
-    avatar: HomepageImage @link(from: "avatar___NODE")
-  }
 
-  type contentfulBlogPostExcerptTextNode implements Node {
-    id: ID!
-    excerpt: String!
-    # determine if markdown is required for this field type
-  }
-
-  type ContentfulBlogPost implements Node & BlogPost {
-    id: ID!
-    slug: String!
-    title: String!
-    html: String! @contentfulRichText
-    body: String!
-    date: Date! @dateformat
-    excerpt: String! @contentfulExcerpt
-    contentfulExcerpt: contentfulBlogPostExcerptTextNode
-      @link(from: "excerpt___NODE")
-    image: HomepageImage @link(from: "image___NODE")
-    author: BlogAuthor @link(from: "author___NODE")
-    category: String
-  }
-
-  `)
 
   // Layout types
   actions.createTypes(/* GraphQL */ `
@@ -745,7 +644,7 @@ exports.createPages = async ({ actions, graphql, reporter }, _opts = {}) => {
 
   const result = await graphql(`
     {
-      posts: allBlogPost {
+      posts: allContentfulBlogPost {
         nodes {
           id
           slug

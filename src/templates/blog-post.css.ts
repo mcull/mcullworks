@@ -40,6 +40,7 @@ globalStyle(containedElements, {
 
 globalStyle(`${blogPost} p`, {
   lineHeight: theme.lineHeights.text,
+  fontFamily: theme.fonts.mono,
 })
 
 globalStyle(`${blogPost} > p:first-of-type`, {
@@ -68,6 +69,6 @@ globalStyle(`${blogPost} h5, ${blogPost} h6`, {
 })
 
 globalStyle(`.blogPostDate`, {
-  fontSize: theme.fontSizes[1],
-  color: colors.secondaryText,
+  fontSize: theme.fontSizes[2],
+  opacity: 0.5,
 })
