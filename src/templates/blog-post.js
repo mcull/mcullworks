@@ -1,6 +1,6 @@
 import * as React from "react"
 import { graphql } from "gatsby"
-import { BLOCKS, MARKS } from "@contentful/rich-text-types"
+import { BLOCKS, INLINES } from "@contentful/rich-text-types"
 import { renderRichText } from "gatsby-source-contentful/rich-text"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import Layout from "../components/layout"
@@ -32,6 +32,9 @@ export default function BlogPost(props) {
                   />
                 )
               },
+              [INLINES.HYPERLINK]: (node, children) => {
+                return <a target="_blank" rel="noopener noreferrer" href={node.data.uri}>{children}</a>
+              }
             },
           })}
         </div>
