@@ -6,7 +6,7 @@ import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import Layout from "../components/layout"
 import { Container, Heading, Box, Subhead, Kicker, Text } from "../components/ui"
 import AudioPlayer from 'react-h5-audio-player';
-import 'react-h5-audio-player/lib/styles.css';
+import './styles.css';
 import SEOHead from "../components/head"
 
 export const Head = (props) => {

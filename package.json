@@ -28,6 +28,7 @@
     "gatsby-plugin-manifest": "^5.0.0",
     "gatsby-plugin-sharp": "^5.0.0",
     "gatsby-plugin-vanilla-extract": "^4.0.1",
+    "gatsby-remark-audio": "^1.0.2",
     "gatsby-source-contentful": "^8.0.0",
     "gatsby-source-filesystem": "^5.0.0",
     "gatsby-transformer-sharp": "^5.0.0",
@@ -37,6 +38,7 @@
     "react-calendly": "^4.3.0",
     "react-dom": "^18.0.0",
     "react-feather": "^2.0.9",
+    "react-h5-audio-player": "^3.9.1",
     "sharp": "^0.32.6"
   },
   "devDependencies": {

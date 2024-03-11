@@ -37,5 +37,15 @@ module.exports = {
         icon: "src/images/orange_bag.png",
       },
     },
+    {
+      resolve: 'gatsby-remark-audio',
+      options: {
+        preload: 'auto',
+        loop: false,
+        controls: true,
+        muted: false,
+        autoplay: false
+      }
+    },
   ],
 }
