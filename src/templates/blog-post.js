@@ -39,13 +39,14 @@ export default function BlogPost(props) {
                   const desc = JSON.parse(asset.description)
                   if (desc.type === "audio") {
                     return (<AudioPlayer
-                      autoPlay
+                      autoPlay={false}
                       src={desc.url}
                       onPlay={e => console.log("onPlay")}
                       showJumpControls={false}
-                      showDownloadProgress={false}
+                      showDownloadProgress={true}
                       customAdditionalControls={[]}
                       layout="horizontal"
+                      preload="metadata"
 
                   />)
                   } else {
