@@ -76,13 +76,10 @@ function PostCardSmall({
 }
 
 export default function BlogIndex(props) {
-  const posts = props.data.allContentfulBlogPost.nodes
-  console.log(posts[0].date)
-  
+  const posts = props.data.allContentfulBlogPost.nodes  
   posts.sort((a, b) => { 
     const aDate = DateTime.fromFormat(a.date, DATEFORMAT)
     const bDate = DateTime.fromFormat(b.date, DATEFORMAT)
-    console.log(aDate)
     return bDate.toUnixInteger() - aDate.toUnixInteger() })
   return (
     <Layout>

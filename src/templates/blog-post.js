@@ -5,6 +5,14 @@ import { renderRichText } from "gatsby-source-contentful/rich-text"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 import Layout from "../components/layout"
 import { Container, Heading, Box, Subhead, Kicker, Text } from "../components/ui"
+import AudioPlayer from 'react-h5-audio-player';
+import 'react-h5-audio-player/lib/styles.css';
+import SEOHead from "../components/head"
+
+export const Head = (props) => {
+  const post = props.data.contentfulBlogPost
+  return <SEOHead  title={post.title} description={post.excerpt.excerpt} image={post.image} />
+}
 
 export default function BlogPost(props) {
   const post = props.data.contentfulBlogPost
@@ -16,7 +24,7 @@ export default function BlogPost(props) {
         <Heading as="h1">{post.title}</Heading>
         <p className="blogPostDate" style={{position:"relative", top:-15}}>{post.date}</p>
         {post.image && (
-          <GatsbyImage alt={post.image.alt} image={getImage(post.image)} />
+          <GatsbyImage alt={post.image.alt} tile={post.image.alt} image={getImage(post.image)} />
         )}
         <div>
           {renderRichText(post.body, {
@@ -25,12 +33,34 @@ export default function BlogPost(props) {
                 const asset = post.body.references.find(
                   (asset) => asset.contentful_id === node.data.target.sys.id
                 )
-                return (
-                  <GatsbyImage
-                    alt={asset.description}
-                    image={getImage(asset)}
-                  />
-                )
+                if (asset.gatsbyImageData === null) {
+                  //not an image. Try parsing description (hack!) to get details to render
+                 
+                  const desc = JSON.parse(asset.description)
+                  if (desc.type === "audio") {
+                    return (<AudioPlayer
+                      autoPlay
+                      src={desc.url}
+                      onPlay={e => console.log("onPlay")}
+                      showJumpControls={false}
+                      showDownloadProgress={false}
+                      customAdditionalControls={[]}
+                      layout="horizontal"
+
+                  />)
+                  } else {
+                    //future: handle video
+                    console.log("unknown type")
+                    console.log(desc.type)
+                  }
+                } else {
+                  return (
+                    <GatsbyImage
+                      alt={asset.description}
+                      image={getImage(asset)}
+                    />
+                  )
+                }
               },
               [INLINES.HYPERLINK]: (node, children) => {
                 return <a target="_blank" rel="noopener noreferrer" href={node.data.uri}>{children}</a>
@@ -40,8 +70,7 @@ export default function BlogPost(props) {
         </div>
       </Box>
     </Container>
-  </Layout>
-  
+  </Layout> 
 )
 }
 
