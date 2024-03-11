@@ -4,6 +4,7 @@ import Layout from "../components/layout"
 import * as sections from "../components/sections"
 import Fallback from "../components/fallback"
 import SEOHead from "../components/head"
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 export default function About(props) {
   const { homepage } = props.data

@@ -4,13 +4,19 @@ import { graphql } from "gatsby"
 import * as sections from "../components/sections"
 import Fallback from "../components/fallback"
 import { InlineWidget } from "react-calendly";
+import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 export default function Coaching (props) { 
     const { homepage } = props.data 
     return (
         <Layout location={props.location}>
+        <div align="center"><GatsbyImage
+                alt={homepage.image.alt} 
+                image={getImage(homepage.image)}
+                placehoder="blurred"
+              /></div>
         <div >
-            {homepage.blocks.map((block) => {
+            {homepage.blocks && homepage.blocks.map((block) => {
             const { id, blocktype, ...componentProps } = block
             const Component = sections[blocktype] || Fallback
             return <Component key={id} {...componentProps} />
@@ -33,6 +39,7 @@ export const query = graphql`
       image {
         id
         url
+        gatsbyImageData
       }
       blocks: content {
         id
