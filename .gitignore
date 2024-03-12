@@ -135,3 +135,5 @@ public
 .netlify
 
 .DS_Store
+scripts/bioraw.txt
+scripts/chatbox.js

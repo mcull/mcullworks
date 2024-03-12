@@ -82,7 +82,7 @@ export default function BlogIndex(props) {
     const bDate = DateTime.fromFormat(b.date, DATEFORMAT)
     return bDate.toUnixInteger() - aDate.toUnixInteger() })
   return (
-    <Layout>
+    <Layout location={props.location}>
       <Container>
         <Box paddingY={4}>
           <FlexList variant="start" gap={0} gutter={3} responsive>

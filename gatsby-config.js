@@ -20,6 +20,15 @@ module.exports = {
         accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
         host: process.env.CONTENTFUL_HOST,
       },
+    },{
+      resolve: `gatsby-plugin-google-fonts`,
+      options: {
+        fonts: [
+          `DM Sans\:300,400,400i,700`, // you can also specify font weights and styles
+          `Montserrat\:300,400,400i,500,600,700`, // you can also specify font weights and styles
+        ],
+        display: 'swap'
+      }
     },
     "gatsby-plugin-sharp",
     "gatsby-plugin-image",
@@ -28,8 +37,8 @@ module.exports = {
     {
       resolve: "gatsby-plugin-manifest",
       options: {
-        name: "Gatsby Starter Contentful Homepage",
-        short_name: "Gatsby",
+        name: "Marc Cull personal site",
+        short_name: "MCull Works",
         start_url: "/",
         // These can be imported once ESM support lands
         background_color: "#ffe491",

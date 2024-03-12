@@ -17,7 +17,7 @@ export const Head = (props) => {
 export default function BlogPost(props) {
   const post = props.data.contentfulBlogPost
 
-  return ( <Layout {...post} description={post.excerpt}>
+  return ( <Layout {...post} description={post.excerpt} location={props.location}>
     <Container>
       <Box paddingY={4}>
         <Kicker>{post.category}</Kicker>

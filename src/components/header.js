@@ -19,11 +19,14 @@ import {
   desktopHeaderNavWrapper,
   mobileHeaderNavWrapper,
   mobileNavSVGColorWrapper,
+  navLink
 } from "./header.css"
 import NavItemGroup from "./nav-item-group"
 import HomeIcon from "./home-icon"
 
-export default function Header(props, xx) {
+export default function Header(props) {
+  console.log("path", props.path)
+
 
   const data = useStaticQuery(graphql`
     query {
@@ -80,12 +83,15 @@ export default function Header(props, xx) {
         <Flex variant="spaceBetween">
           <NavLink to="/">
             <VisuallyHidden>Home</VisuallyHidden>
-            {!props.isHome &&  <HomeIcon />}
+            {!props.pathname === "/" &&  <HomeIcon />}
           </NavLink>
           <nav>
             <FlexList gap={4}>
               {navItems &&
-                navItems.map((navItem) => (
+                navItems.map((navItem) => {
+                  const isActive = props.path.startsWith(navItem.href);
+
+                  return (
                   <li key={navItem.id}>
                     {navItem.navItemType === "Group" ? (
                       <NavItemGroup
@@ -93,10 +99,11 @@ export default function Header(props, xx) {
                         navItems={navItem.navItems}
                       />
                     ) : (
-                      <NavLink to={navItem.href}>{navItem.text}</NavLink>
+                      <NavLink to={navItem.href} active={isActive.toString()}>{navItem.text}</NavLink>
                     )}
                   </li>
-                ))}
+                )}
+              )}
             </FlexList>
           </nav>
           <div />
@@ -155,7 +162,7 @@ export default function Header(props, xx) {
                       navItems={navItem.navItems}
                     />
                   ) : (
-                    <NavLink to={navItem.href} className={mobileNavLink}>
+                    <NavLink to={navItem.href} className={navLink[true ? "active" : "inactive"]}>
                       {navItem.text}
                     </NavLink>
                   )}

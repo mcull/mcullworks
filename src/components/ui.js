@@ -152,7 +152,9 @@ export function Link({ to, href, ...props }) {
 }
 
 export function NavLink({ ...props }) {
-  return <Base as={Link} cx={[styles.navlink]} {...props} />
+  const isActive = props.active === "true";
+  const activeLink = isActive ? styles.activeNavLink : null;
+  return <Base as={Link} cx={[styles.navlink, activeLink]} {...props} />
 }
 
 export function NavButtonLink({ ...props }) {

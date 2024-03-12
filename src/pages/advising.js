@@ -10,11 +10,6 @@ export default function Advising (props) {
     
     return (
         <Layout location={props.location}>
-          <div align="center"><GatsbyImage
-                alt={homepage.image.alt} 
-                image={getImage(homepage.image)}
-                placehoder="blurred"
-              /></div>
         <div >
             {homepage.blocks && homepage.blocks.map((block) => {
             const { id, blocktype, ...componentProps } = block

@@ -426,9 +426,14 @@ export const navlink = style({
   transitionDuration: "0.2s",
   transitionTimingFunction: "ease-in-out",
   ":hover": {
-    color: theme.colors.active,
+    color: theme.colors.active
   },
 })
+
+export const activeNavLink = style({
+  fontWeight: theme.fontWeights.bold,
+})
+
 
 export const navButtonlink = style({
   color: "inherit",
