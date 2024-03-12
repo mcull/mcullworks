@@ -66,6 +66,7 @@ export default function Header(props) {
 
   const { navItems, cta } = data.layout.header
   const [isOpen, setOpen] = React.useState(false)
+  let isActive = false;
  
 
   React.useEffect(() => {
@@ -89,7 +90,7 @@ export default function Header(props) {
             <FlexList gap={4}>
               {navItems &&
                 navItems.map((navItem) => {
-                  const isActive = props.path.startsWith(navItem.href);
+                  isActive = props.path && props.path.startsWith(navItem.href);
 
                   return (
                   <li key={navItem.id}>
@@ -99,7 +100,7 @@ export default function Header(props) {
                         navItems={navItem.navItems}
                       />
                     ) : (
-                      <NavLink to={navItem.href} active={isActive.toString()}>{navItem.text}</NavLink>
+                      <NavLink to={navItem.href} active={isActive ? "true" : "false"}>{navItem.text}</NavLink>
                     )}
                   </li>
                 )}
@@ -162,7 +163,7 @@ export default function Header(props) {
                       navItems={navItem.navItems}
                     />
                   ) : (
-                    <NavLink to={navItem.href} className={navLink[true ? "active" : "inactive"]}>
+                    <NavLink to={navItem.href}>
                       {navItem.text}
                     </NavLink>
                   )}
