@@ -22,7 +22,7 @@ export default function Hero(props) {
             {props.image && (
               <GatsbyImage
                 alt={props.image.alt}
-                style={props.isMarc && {position:"relative",left:-60,top:-90,borderBottom:"6px #B00808 solid",zIndex:0}}
+                style={Object.assign({filter: "drop-shadow(5px 5px 10px #666666)"},props.isMarc ? {position:"relative",left:-60,top:-90,borderBottom:"6px #B00808 solid",zIndex:0} : {})}
                 image={getImage(props.image.gatsbyImageData)}
                 placehoder="blurred"
               />

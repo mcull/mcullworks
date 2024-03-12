@@ -581,13 +581,14 @@ export const logos: Record<LogoSizes, string> = styleVariants({
   },
 })
 
-export type IconSizes = "small" | "medium" | "large"
+export type IconSizes = "small" | "medium" | "large" | "xlarge"
 
 export const icons: Record<IconSizes, string> = styleVariants(
   {
     small: "24px",
     medium: "32px",
     large: "64px",
+    xlarge: "128px",
   },
   (size) => ({
     width: size,

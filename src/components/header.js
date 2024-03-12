@@ -83,7 +83,7 @@ export default function Header(props) {
         <Flex variant="spaceBetween">
           <NavLink to="/">
             <VisuallyHidden>Home</VisuallyHidden>
-            {!props.pathname === "/" &&  <HomeIcon />}
+            {!props.path === "/" &&  <HomeIcon />}
           </NavLink>
           <nav>
             <FlexList gap={4}>
