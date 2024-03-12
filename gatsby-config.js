@@ -30,6 +30,12 @@ module.exports = {
         display: 'swap'
       }
     },
+    {
+      resolve: 'gatsby-plugin-html-attributes',
+      options: {
+        lang: 'en-US'
+      }
+    },
     "gatsby-plugin-sharp",
     "gatsby-plugin-image",
     "gatsby-transformer-sharp",
