@@ -25,7 +25,7 @@ import NavItemGroup from "./nav-item-group"
 import HomeIcon from "./home-icon"
 
 export default function Header(props) {
-  console.log("path", props.path)
+  const isHome = props.path === "/"
 
 
   const data = useStaticQuery(graphql`
@@ -83,7 +83,7 @@ export default function Header(props) {
         <Flex variant="spaceBetween">
           <NavLink to="/">
             <VisuallyHidden>Home</VisuallyHidden>
-            {!props.path === "/" &&  <HomeIcon />}
+            {!isHome &&  <HomeIcon />}
           </NavLink>
           <nav>
             <FlexList gap={4}>
