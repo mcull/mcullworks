@@ -9,7 +9,7 @@ module.exports = {
     siteUrl: "https://mcull.works/",
     title: "Marc Cull | Seasoned Engineering Leadership",
     author: `Marc Cull`,
-    description: "Personal Homepage for Marc Cull",
+    description: "Professional webpage for Marc Cull, engineering leader and coach.",
   },
   plugins: [
     {
