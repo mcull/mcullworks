@@ -205,6 +205,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
       id: ID!
       blocktype: String
       text: String
+      name: String
       logos: [HomepageLogo]
     }
 
@@ -416,6 +417,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
       @dontInfer {
       blocktype: String @blocktype
       text: String
+      name: String
       logos: [HomepageLogo] @link(from: "logos___NODE")
     }
 

@@ -18,8 +18,7 @@ import {
   mobileNavLink,
   desktopHeaderNavWrapper,
   mobileHeaderNavWrapper,
-  mobileNavSVGColorWrapper,
-  navLink
+  mobileNavSVGColorWrapper
 } from "./header.css"
 import NavItemGroup from "./nav-item-group"
 import HomeIcon from "./home-icon"
@@ -163,9 +162,9 @@ export default function Header(props) {
                       navItems={navItem.navItems}
                     />
                   ) : (
-                    <NavLink to={navItem.href}>
-                      {navItem.text}
-                    </NavLink>
+                    <NavLink to={navItem.href} className={mobileNavLink}>
+                    {navItem.text}
+                  </NavLink>
                   )}
                 </li>
               ))}
