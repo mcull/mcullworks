@@ -54,6 +54,14 @@ module.exports = {
         },
       },
     },
+    {
+      resolve: 'gatsby-plugin-robots-txt',
+      options: {
+        host: 'https://mcull.works',
+        sitemap: 'https://mcull.works/sitemap.xml',
+        policy: [{userAgent: '*', allow: '/'}]
+      }
+    },
     "gatsby-plugin-sharp",
     "gatsby-plugin-image",
     "gatsby-transformer-sharp",

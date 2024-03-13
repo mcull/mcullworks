@@ -29,6 +29,7 @@
     "gatsby-plugin-html-attributes": "^1.0.5",
     "gatsby-plugin-image": "^3.0.0",
     "gatsby-plugin-manifest": "^5.0.0",
+    "gatsby-plugin-robots-txt": "^1.8.0",
     "gatsby-plugin-sharp": "^5.0.0",
     "gatsby-plugin-vanilla-extract": "^4.0.1",
     "gatsby-remark-audio": "^1.0.2",
