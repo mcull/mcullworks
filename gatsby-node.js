@@ -221,6 +221,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
       blocktype: String
       kicker: String
       heading: String
+      subhead: String
       content: [HomepageTestimonial]
     }
 
@@ -435,6 +436,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
       blocktype: String @blocktype
       kicker: String
       heading: String
+      subhead: String
       content: [HomepageTestimonial] @link(from: "content___NODE")
     }
 

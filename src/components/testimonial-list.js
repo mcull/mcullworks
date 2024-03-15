@@ -16,18 +16,18 @@ import {
 function Testimonial(props) {
   return (
     <Flex variant="start">
-      {props.avatar && (
+      {false && props.avatar && (
         <Avatar alt={props.avatar.alt} image={props.avatar.gatsbyImageData} />
       )}
       <Blockquote>
-        <Text as="p" variant="lead">
-          {props.quote}
-        </Text>
-        <figcaption>
+      <figcaption>
           <Text as="cite" bold variant="caps">
             {props.source}
           </Text>
         </figcaption>
+        <Text as="p" variant="lead">
+        &ldquo;{props.quote}&rdquo;
+        </Text>
       </Blockquote>
     </Flex>
   )
@@ -42,6 +42,7 @@ export default function TestimonialList(props) {
             {props.kicker && <Kicker>{props.kicker}</Kicker>}
             {props.heading}
           </Heading>
+          <Text as="p" variant="subheadSmall">{props.subhead}</Text>
         </Box>
         <FlexList gutter={3} variant="start" responsive wrap>
           {props.content.map((testimonial, index) => (
@@ -60,6 +61,7 @@ export const query = graphql`
     id
     kicker
     heading
+    subhead
     content {
       id
       quote
