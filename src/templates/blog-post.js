@@ -35,8 +35,8 @@ export default function BlogPost(props) {
                 )
                 if (asset.gatsbyImageData === null) {
                   //not an image. Try parsing description (hack!) to get details to render
-                 
                   const desc = JSON.parse(asset.description)
+                 
                   if (desc.type === "audio") {
                     return (
                     <AudioPlayer

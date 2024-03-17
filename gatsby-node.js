@@ -166,6 +166,11 @@ exports.createSchemaCustomization = async ({ actions }) => {
       links: [HomepageLink]
     }
 
+    interface EmbeddableImage implements Node {
+      id: ID!
+      image: HomepageImage
+    }
+
     interface HomepageFeature implements Node & HomepageBlock {
       id: ID!
       blocktype: String
@@ -329,6 +334,8 @@ exports.createSchemaCustomization = async ({ actions }) => {
       image: HomepageImage
       html: String!
     }
+
+
   `)
 
   // CMS-specific types for Homepage
@@ -377,6 +384,11 @@ exports.createSchemaCustomization = async ({ actions }) => {
       image: HomepageImage @link(from: "image___NODE")
       text: String
       links: [HomepageLink] @link(from: "links___NODE")
+    }
+
+    type ContentfulEmbeddableImage implements Node & EmbeddableImage @dontInfer {
+      id: ID!
+      image: HomepageImage @link(from: "image___NODE")
     }
 
     type ContentfulHomepageFeature implements Node & HomepageBlock & HomepageFeature

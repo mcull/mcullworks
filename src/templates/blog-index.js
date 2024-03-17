@@ -24,7 +24,6 @@ function PostCard({
   image,
   title,
   excerpt,
-  author,
   category,
   date,
   ...props
@@ -43,11 +42,6 @@ function PostCard({
       </Subhead>
       <Text as="p" className="blogPostDate">{DateTime.fromFormat(date, DATEFORMAT).toLocaleString(DateTime.DATE_FULL)}</Text>
       <Text as="p">{excerpt.excerpt}</Text>
-      {author?.name && (
-        <Text variant="bold">
-          <div>By {author.name}</div>
-        </Text>
-      )}
     </BlockLink>
   )
 }
