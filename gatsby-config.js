@@ -1,15 +1,16 @@
 // support for .env, .env.development, and .env.production
-require("dotenv").config()
 require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`,
 })
 
+const siteUrl = process.env.URL || `https://mcull.works`
+
 module.exports = {
   siteMetadata: {
-    siteUrl: "https://mcull.works/",
+    siteUrl: siteUrl,
     title: "Marc Cull | Seasoned Engineering Leadership",
     author: `Marc Cull`,
-    description: "Professional webpage for Marc Cull, engineering leader and coach.",
+    description: "Marc Cull - Product Engineering Leader. CPTO, CTO, VP ENG specializing in building high-performing teams and systems for rapid scaling of start-ups. Expert in talent discovery, team structure, and rapid innovation and product delivery.",
   },
   plugins: [
     {
@@ -87,6 +88,34 @@ module.exports = {
         muted: false,
         autoplay: false
       }
+    },
+    {
+      resolve: "gatsby-plugin-sitemap",
+      options: {
+        query: `
+        {
+          allSitePage {
+            nodes {
+              path
+            }
+          }
+        }
+      `,
+        resolveSiteUrl: () => siteUrl,
+        resolvePages: ({
+          allSitePage: { nodes: allPages }
+        }) => {
+          return allPages.map(page => {
+            return { ...page }
+          })
+        },
+        serialize: ({ path }) => {
+          return {
+            url: path,
+            lastmod: new Date().toISOString().split('T')[0],
+          }
+        },
+      },
     },
   ],
 }
