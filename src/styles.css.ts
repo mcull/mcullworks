@@ -10,6 +10,19 @@ globalStyle("body", {
   MozOsxFontSmoothing: "grayscale",
 })
 
+globalStyle("td", {
+  border: "#cccccc thin dotted",
+  verticalAlign: "top",
+  padding: ".5em"
+})
+
+globalStyle("table", {
+  width: "100%",
+  tableLayout: "fixed",
+  borderCollapse: "separate",
+  borderSpacing: "1em"
+})
+
 globalStyle("*", {
   boxSizing: "border-box",
 })

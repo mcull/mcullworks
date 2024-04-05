@@ -18,7 +18,7 @@ export default function BlogPost(props) {
   const post = props.data.contentfulBlogPost
 
   return ( <Layout {...post} description={post.excerpt} location={props.location}>
-    <Container>
+    <Container style={{fontFamily: "Georgia, serif"}}>
       <Box paddingY={4}>
         <Kicker>{post.category}</Kicker>
         <Heading as="h1">{post.title}</Heading>
@@ -26,7 +26,7 @@ export default function BlogPost(props) {
         {post.image && (
           <GatsbyImage alt={post.image.alt} tile={post.image.alt} image={getImage(post.image)} />
         )}
-        <div>
+        <div className="blogPost">
           {renderRichText(post.body, {
             renderNode: {
               [BLOCKS.EMBEDDED_ASSET]: (node) => {
