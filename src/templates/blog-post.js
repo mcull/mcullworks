@@ -18,7 +18,7 @@ export default function BlogPost(props) {
   const post = props.data.contentfulBlogPost
 
   return ( <Layout {...post} description={post.excerpt} location={props.location}>
-    <Container style={{fontFamily: "Georgia, serif"}}>
+    <Container style={{lineHeight: "2em"}}>
       <Box paddingY={4}>
         <Kicker>{post.category}</Kicker>
         <Heading as="h1">{post.title}</Heading>
