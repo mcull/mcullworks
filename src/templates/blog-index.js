@@ -92,6 +92,16 @@ export default function BlogIndex(props) {
   )
 }
 
+export const Head = (props) => {
+  return (
+    <SEOHead
+      title="Blog | Marc Cull"
+      description="Writing by Marc Cull on product engineering leadership, building high-performing teams, and scaling startups."
+      pathname="/blog/"
+    />
+  )
+}
+
 export const query = graphql`
   query {
     allContentfulBlogPost {

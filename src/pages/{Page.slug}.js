@@ -24,7 +24,7 @@ export default function Page(props) {
 }
 export const Head = (props) => {
   const { page } = props.data
-  return <SEOHead {...page} />
+  return <SEOHead {...page} pathname={`/${page.slug}/`} />
 }
 export const query = graphql`
   query PageContent($id: String!) {

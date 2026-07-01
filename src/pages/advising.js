@@ -4,6 +4,7 @@ import { graphql } from "gatsby"
 import * as sections from "../components/sections"
 import Fallback from "../components/fallback"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import SEOHead from "../components/head"
 
 export default function Advising (props) { 
     const { homepage } = props.data 
@@ -19,6 +20,21 @@ export default function Advising (props) {
         </div>
         </Layout>
     )
+}
+
+export const Head = (props) => {
+  const { homepage } = props.data
+  return (
+    <SEOHead
+      title="Advising with Marc Cull | Product & Engineering Leadership"
+      description={
+        (homepage && homepage.description) ||
+        "Startup advising with Marc Cull — product and engineering leadership for founders building and scaling high-performing teams."
+      }
+      image={homepage && homepage.image}
+      pathname="/advising/"
+    />
+  )
 }
 
 export const query = graphql`

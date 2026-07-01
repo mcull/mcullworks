@@ -11,7 +11,15 @@ import SEOHead from "../components/head"
 
 export const Head = (props) => {
   const post = props.data.contentfulBlogPost
-  return <SEOHead  title={post.title} description={post.excerpt.excerpt} image={post.image} />
+  return (
+    <SEOHead
+      title={post.title}
+      description={post.excerpt.excerpt}
+      image={post.image}
+      pathname={`/blog/${post.slug}/`}
+      article={{ datePublished: post.rawDate }}
+    />
+  )
 }
 
 export default function BlogPost(props) {
@@ -98,6 +106,7 @@ export const query = graphql`
         }
       }
       date(formatString:"MMMM Do, YYYY")
+      rawDate: date
       image {
         id
         url

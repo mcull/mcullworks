@@ -21,8 +21,16 @@ export default function About(props) {
   )
 }
 export const Head = (props) => {
-  const { aboutPage } = props.data
-  return <SEOHead {...aboutPage} />
+  const { homepage } = props.data
+  return (
+    <SEOHead
+      title="About Marc Cull | Product & Engineering Leader"
+      description="About Marc Cull — a product engineering leader (CPTO, CTO, VP Engineering) focused on building high-performing teams and systems for rapidly scaling startups."
+      image={homepage.image}
+      pathname="/about/"
+      includePerson
+    />
+  )
 }
 export const query = graphql`
 {
